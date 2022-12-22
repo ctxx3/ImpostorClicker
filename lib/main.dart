@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testapk/impostor_view.dart';
-import 'package:testapk/progressbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,12 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Color(0x00000000)));
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(),
+      theme: ThemeData(backgroundColor: Colors.black),
       home: const MainPage(),
     );
   }
@@ -41,26 +40,10 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
-      value: 1,
+      duration: const Duration(milliseconds: 600),
+      value: 0,
     );
-
-    _tabController = TabController(vsync: this, length: 5)
-      ..addListener(() {
-        if (_tabController.indexIsChanging) {
-          if (_tabController.index != currentSelected) {
-            _controller.reverse(from: 1).then((value) => {
-                  currentSelected = _tabController.index,
-                  _controller.forward(from: 0)
-                });
-          }
-
-          setState(() {});
-        }
-      });
-    setState(() {
-      _tabController.index = 2;
-    });
+    _tabController = TabController(vsync: this, length: 4);
   }
 
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
@@ -76,16 +59,38 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  Widget _tabBarView() {
-    return SlideTransition(
-      position: _offsetAnimation,
-      child: const [
-        Center(child: Text("LMAO1")),
-        Center(child: Text("LMAO2")),
-        ImpostorView(),
-        Center(child: Text("LMAO3")),
-        Center(child: Text("LMAO4")),
-      ][currentSelected],
+  Widget template(String text, Color color) {
+    return Container(
+      color: color,
+      child: Center(
+          child: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'SansPro',
+          fontSize: 24,
+        ),
+      )),
+    );
+  }
+
+  bool panelOpen = false;
+  Widget body() {
+    return Stack(
+      children: [
+        TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              template("LMAO 1", Colors.red),
+              template("LMAO 2", Colors.indigo),
+              template("LMAO 3", Colors.green),
+              template("LMAO 4", Colors.purple),
+            ]),
+        SlideTransition(
+          position: _offsetAnimation,
+          child: const ClipRect(child: ImpostorView()),
+        ),
+      ],
     );
   }
 
@@ -94,25 +99,23 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: TabBarView(
-          controller: _tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            Center(child: Text("LMAO1")),
-            Center(child: Text("LMAO2")),
-            Center(child: Text("LMAO3")),
-            Center(child: Text("LMAO4")),
-          ]),
+      body: body(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_tabController.index != 2) {
-            _tabController.animateTo(2);
-          } else {
-            _tabController.animateTo(0);
-          }
+          setState(() {
+            if (!panelOpen) {
+              _controller.forward(from: _controller.value);
+            } else {
+              _controller.reverse(from: _controller.value);
+            }
+            setState(() {});
+            panelOpen = !panelOpen;
+          });
         },
         elevation: 4.0,
-        child: const Icon(FontAwesomeIcons.chevronUp),
+        child: (panelOpen)
+            ? const Icon(FontAwesomeIcons.chevronDown)
+            : const Icon(FontAwesomeIcons.chevronUp),
       ),
       bottomNavigationBar: AnimatedBottomNavigationBar(
           icons: const [
@@ -132,7 +135,6 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
           activeColor: const Color(0xffffffff),
           onTap: (index) => {
                 _tabController.animateTo(index),
-                _tabController.animateTo((index < 2) ? index : index + 1),
                 setState(() => {
                       _bottomNavIndex = index,
                     }),
