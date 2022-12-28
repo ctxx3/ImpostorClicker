@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:testapk/game.dart';
 import 'package:testapk/topbar.dart';
 
 class ImpostorView extends StatefulWidget {
-  const ImpostorView({Key? key}) : super(key: key);
-
+  final Game game;
+  const ImpostorView({Key? key, required this.game}) : super(key: key);
   @override
   State<ImpostorView> createState() => ImpostorViewState();
 }
@@ -15,6 +16,8 @@ class ImpostorViewState extends State<ImpostorView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  int selectedIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +38,8 @@ class ImpostorViewState extends State<ImpostorView>
                         -(1 / 140) * MediaQuery.of(context).size.height + 8.642,
                     fit: BoxFit.none,
                     alignment: const Alignment(0, -.95),
-                    image: const AssetImage('assets/amogus.png'))),
+                    image: AssetImage(
+                        widget.game.player.impostors[selectedIndex].sprite))),
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 42, sigmaY: 42),
                 child: Container(
@@ -48,17 +52,33 @@ class ImpostorViewState extends State<ImpostorView>
                             padding: const EdgeInsets.only(
                                 left: 20, right: 20, bottom: 5),
                             child: Column(
-                              children: [topBar],
+                              children: [
+                                topBar(
+                                    widget.game.player.impostors[selectedIndex]
+                                        .level,
+                                    widget.game.player.impostors[selectedIndex]
+                                        .exp,
+                                    100,
+                                    Colors.cyan)
+                              ],
                             )),
                         Flexible(
                           child: Image.asset(
-                            'assets/amogus.png',
+                            widget.game.player.impostors[selectedIndex].sprite,
                           ),
                         ),
                         Container(
                             padding: const EdgeInsets.only(
                                 left: 20, right: 20, bottom: 5),
-                            child: title("The Real Sus", "Mythic", 4)),
+                            child: title(
+                                widget
+                                    .game.player.impostors[selectedIndex].name,
+                                widget.game.tiers[widget
+                                    .game.player.impostors[selectedIndex].tier],
+                                widget
+                                    .game.player.impostors[selectedIndex].stars,
+                                const Color(0xffaa4261),
+                                const Color.fromARGB(235, 211, 62, 86))),
                         Container(
                             decoration: const BoxDecoration(
                                 border: Border(
@@ -78,7 +98,11 @@ class ImpostorViewState extends State<ImpostorView>
                                       FontAwesomeIcons.accessibleIcon, "ass"),
                                   ibutton(FontAwesomeIcons.box, "ass")
                                 ])),
-                        impostorList(),
+                        impostorList(
+                            widget.game.player.impostors,
+                            ((id) => {
+                                  setState((() => {selectedIndex = id}))
+                                })),
                       ],
                     ))))));
   }

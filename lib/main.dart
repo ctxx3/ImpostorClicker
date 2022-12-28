@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testapk/impostor_view.dart';
+import 'package:testapk/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +35,9 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _tabController;
   late final AnimationController _controller;
+  late Game game;
   int currentSelected = 0;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +47,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
       value: 0,
     );
     _tabController = TabController(vsync: this, length: 4);
+    game = Game();
   }
 
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
@@ -74,24 +78,37 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   bool panelOpen = false;
-  Widget body() {
-    return Stack(
-      children: [
-        TabBarView(
-            controller: _tabController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              template("LMAO 1", Colors.red),
-              template("LMAO 2", Colors.indigo),
-              template("LMAO 3", Colors.green),
-              template("LMAO 4", Colors.purple),
-            ]),
-        SlideTransition(
-          position: _offsetAnimation,
-          child: const ClipRect(child: ImpostorView()),
-        ),
-      ],
-    );
+  bool loaded = false;
+  FutureBuilder body() {
+    return FutureBuilder(
+        future: game.init(),
+        builder: (context, snapshot) {
+          if (loaded || snapshot.hasData) {
+            loaded = true;
+            return Stack(
+              children: [
+                TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      template("LMAO 1", Colors.red),
+                      template("LMAO 2", Colors.indigo),
+                      template("LMAO 3", Colors.green),
+                      template("LMAO 4", Colors.purple),
+                    ]),
+                SlideTransition(
+                  position: _offsetAnimation,
+                  child: ClipRect(
+                      child: ImpostorView(
+                    game: game,
+                  )),
+                ),
+              ],
+            );
+          } else {
+            return const Text("Loading");
+          }
+        });
   }
 
   int _bottomNavIndex = 0;

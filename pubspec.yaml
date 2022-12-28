@@ -31,9 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg:
   font_awesome_flutter: ^10.3.0
   animated_bottom_navigation_bar: ^1.1.0
+  http:
+  shared_preferences: ^0.5.5
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +46,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  msix: ^3.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -63,6 +65,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
+    - assets/sprites/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -99,3 +102,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+msix_config:
+  display_name: Impostor clicker
+  publisher_display_name: ctx3
+  identity_name: company.ctx3.impostor-clicker
+  msix_version: 1.0.0.0
+  capabilities: internetClient
+  certificate_path: C:\users\ctx\lmao.pfx
+  certificate_password: lmao

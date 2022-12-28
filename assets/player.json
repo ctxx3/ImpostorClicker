@@ -1,0 +1,31 @@
+{
+    "username": "player",
+    "coins": 0.0,
+    "playerLevel": 1,
+    "playerxp": 0.0,
+    "selectedImpostor": 0,
+    "impostors": [
+        {
+            "name": "Orang",
+            "level": 22,
+            "exp": 48.0,
+            "stars": 0,
+            "baseId": 3
+        },
+        {
+            "name": "Standard sus",
+            "level": 6,
+            "exp": 0.0,
+            "stars": 0,
+            "baseId": 1
+        },
+        {
+            "name": "Basic impostor",
+            "level": 12,
+            "exp": 12.0,
+            "stars": 2,
+            "baseId": 0
+        }
+
+    ]
+}
