@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testapk/impostor_view.dart';
 import 'package:testapk/game.dart';
+import 'package:testapk/main_game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -91,7 +92,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     controller: _tabController,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      template("LMAO 1", Colors.red),
+                      const ClipRect(child: MainGame()),
                       template("LMAO 2", Colors.indigo),
                       template("LMAO 3", Colors.green),
                       template("LMAO 4", Colors.purple),

@@ -14,7 +14,7 @@ class Game {
   late Player player;
   late final List<Impostor> impostors;
 
-  Game() {}
+  Game();
 
   Future<bool> init() async {
     List<Impostor> temp = [];

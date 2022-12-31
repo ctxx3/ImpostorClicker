@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Production {
   final num coins;
   final num exp;
