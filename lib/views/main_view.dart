@@ -11,8 +11,11 @@ class MainGame extends StatefulWidget {
 }
 
 class _MainGameState extends State<MainGame>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late AnimationController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -28,6 +31,7 @@ class _MainGameState extends State<MainGame>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         extendBody: true,
         backgroundColor: const Color(0xff0b0c11),
@@ -47,8 +51,8 @@ class _MainGameState extends State<MainGame>
                 },
               )),
           ClipRect(
-              child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 180, sigmaY: 180),
+              //child: BackdropFilter(
+            //filter: ImageFilter.blur(sigmaX:150, sigmaY: 150),
             child: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.only(top: 350),
@@ -63,7 +67,7 @@ class _MainGameState extends State<MainGame>
                         .createShader(bounds);
                   },
                 )),
-          ))
+          )//)
         ]));
   }
 }

@@ -1,0 +1,91 @@
+{
+    "version": "1.0.0",
+    "Loot_chance": {
+        "T1": [0.55, 0.30, 0.15, 0,    0,   0    ],
+        "T2": [0.45, 0.33, 0.20, 0.02, 0,   0    ],
+        "T3": [0.16, 0.20, 0.35, 0.25, 0.04, 0   ],
+        "T4": [0.01, 0,    0.47, 0.35, 0.16, 0.01]
+    },
+    "Rarity_defaults": [
+        {
+            "name": "Common",
+            "max_level": 100,
+            "player_xp_gain": 40
+        },
+        {
+            "name": "Uncommon",
+            "max_level": 150,
+            "player_xp_gain": 100
+        },
+        {
+            "name": "Rare",
+            "max_level": 250,
+            "player_xp_gain": 250
+        },
+        {
+            "name": "Epic",
+            "max_level": 400,
+            "player_xp_gain": 600
+        },
+        {
+            "name": "Legendary",
+            "max_level": 800,
+            "player_xp_gain": 1400
+        },
+        {
+            "name": "Astral",
+            "max_level": 999,
+            "player_xp_gain": 3200
+        }
+    ],
+    "shop": {
+        "Visor": [
+            {
+                "name": "Plastic Visor",
+                "price": 250,
+                "xp_multiplier": 1.10,
+                "max_level": 100,
+                "required_player_level": 2,
+
+                "upgrade_cost": 100,
+                "upgrade_cost_mult": 1.04,
+                "upgrade_xp_gain": 0.02
+            },
+            {
+                "name": "Glass Fiber",
+                "price": 1850,
+                "xp_multiplier": 1.20,
+                "max_level": 150,
+                "required_player_level": 8,
+
+                "upgrade_cost": 130,
+                "upgrade_mult": 1.06,
+                "upgrade_xp_gain": 0.04
+            },
+            {
+                "name": "Nano tech",
+                "price": 12750,
+                "xp_multiplier": 1.50,
+                "max_level": 200,
+                "required_player_level": 16,
+
+                "upgrade_cost": 130,
+                "upgrade_mult": 1.06,
+                "upgrade_xp_gain": 0.04
+            }
+        ],
+        "Suit":[
+            {
+                "name": "Plain rubber",
+                "price": 250,
+                "production_multiplier": 1.10,
+                "max_level": 100,
+                "required_player_level": 2,
+
+                "upgrade_cost": 100,
+                "upgrade_cost_mult": 1.04,
+                "upgrade_xp_gain": 0.02
+            }
+        ]
+    }
+}

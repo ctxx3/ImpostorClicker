@@ -1,0 +1,71 @@
+[
+    {
+        "default_name": "Basic impostor",
+        "sprite": "assets/sprites/red.png",
+        "tier": 0,
+        "production": {
+            "coins": 1,
+            "exp": 1,
+            "loot_chests": 0
+        },
+        "afk_production": {
+            "coins": 0.01,
+            "exp": 0.01,
+            "loot_chests": 0
+        },
+        "level_multiplier": 20,
+        "stat_multiplier": 1.02
+    },
+
+    {
+        "default_name": "Standard Sus",
+        "sprite": "assets/sprites/pink.png",
+        "tier": 0,
+        "production": {
+            "coins": 1,
+            "exp": 1,
+            "loot_chests": 0
+        },
+        "afk_production": {
+            "coins": 0.01,
+            "exp": 0.01,
+            "loot_chests": 0
+        },
+        "level_multiplier": 20,
+        "stat_multiplier": 1.2
+    },
+    {
+        "default_name": "Normal eoi",
+        "sprite": "assets/sprites/cyan.png",
+        "tier": 0,
+        "production": {
+            "coins": 1,
+            "exp": 1,
+            "loot_chests": 0,
+            "afk_production": {
+                "coins": 0.01,
+                "exp": 0.01,
+                "loot_chests": 0
+            },
+            "level_multiplier": 20,
+            "stat_multiplier": 1.2
+        }
+    },
+    {
+        "default_name": "Orang",
+        "sprite": "assets/sprites/orange.png",
+        "tier": 1,
+        "production": {
+            "coins": 1,
+            "exp": 1,
+            "loot_chests": 0,
+            "afk_production": {
+                "coins": 0.01,
+                "exp": 0.01,
+                "loot_chests": 0
+            },
+            "level_multiplier": 20,
+            "stat_multiplier": 1.2
+        }
+    }
+    ]

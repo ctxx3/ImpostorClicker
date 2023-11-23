@@ -1,16 +1,53 @@
-# testapk
+# Impostor Clicker ![Flutter Version](https://img.shields.io/badge/flutter-v3.2.0-blue)
 
-A new Flutter project.
+This is a personal project of mine. A clicker game made with Flutter.
+
+## Table of Contents
+- [Impostor Clicker ](#impostor-clicker-)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Acknowledgements](#acknowledgements)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get a local copy up and running, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone the repository
+```bash
+git clone https://github.com/ctxx3/ImpostorClicker.git
+```
+2. Navigate to the project directory
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+cd ImpostorClicker
+```
+3. Install dependencies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+```
+
+4. Run the app
+```bash
+flutter run
+```
+
+
+
+## Usage
+
+This game is a simple clicker, click, upgrade and try to become the best that there ever was!
+
+
+
+## Contributing
+
+At this point saddly i can't take any contributions 😔
+But there is always a possibility in the future!
+
+## Acknowledgements
+- [ctx3](https://github.com/ctxx3)
+- [Flutter](https://flutter.dev/)
+- [VS Code](https://code.visualstudio.com/)

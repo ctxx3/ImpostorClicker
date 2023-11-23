@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:testapk/ImpostorClass.dart';
+import 'package:impostor_clicker/classes/character_class.dart';
 
 Widget uiButton(IconData icon, void Function() onclick) {
   return SizedBox.fromSize(
@@ -162,8 +162,8 @@ Widget ibutton(IconData icon, String text) {
 Widget impostorTile(
     int id, String asset, String title, String lvl, void Function(int id) onTap,
     {bool dark = false}) {
-  return SizedBox.fromSize(
-      size: const Size(300, 50),
+  return SizedBox(
+      height: 50,
       child: Card(
         color: Colors.transparent,
         shape: const RoundedRectangleBorder(
@@ -225,21 +225,19 @@ Widget impostorTile(
       ));
 }
 
-List<Container> list = [];
+List<Column> list = [];
 Widget impostorList(List<Character> impostors, void Function(int id) onTap) {
+  ScrollController sc = ScrollController();
+
   if (list.isEmpty) {
     List<Widget> tempList = [];
     for (var i = 0; i < impostors.length; i++) {
       tempList.add(impostorTile(i + 1, impostors[i].sprite, impostors[i].name,
           '${impostors[i].level}', onTap));
       if (i % 2 == 0 && i != 0) {
-        list.add(Container(
-            margin: (i == 2)
-                ? const EdgeInsets.only(left: 20, right: 20)
-                : const EdgeInsets.only(right: 20),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.from(tempList))));
+        list.add(Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.from(tempList)));
         tempList = [];
       }
     }
@@ -250,13 +248,9 @@ Widget impostorList(List<Character> impostors, void Function(int id) onTap) {
       tempList.add(const SizedBox(width: 300, height: 50));
     }
     if (tempList.isNotEmpty) {
-      list.add(Container(
-          margin: (list.isEmpty)
-              ? const EdgeInsets.only(left: 20, right: 20)
-              : const EdgeInsets.only(right: 20),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: tempList)));
+      list.add(Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: tempList));
       tempList = [];
     }
   }
@@ -264,7 +258,7 @@ Widget impostorList(List<Character> impostors, void Function(int id) onTap) {
   return Column(
     children: [
       Container(
-        margin: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+        margin: const EdgeInsets.only(top: 20, bottom: 20),
         alignment: Alignment.centerLeft,
         child: RichText(
           text: const TextSpan(
@@ -288,11 +282,14 @@ Widget impostorList(List<Character> impostors, void Function(int id) onTap) {
       ),
       Container(
         margin: const EdgeInsets.only(bottom: 10),
-        height: 150,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          children: list,
+        height: 160,
+        child: Scrollbar(
+          controller: sc,
+          child: ListView(
+            controller: sc,
+            physics: const BouncingScrollPhysics(),
+            children: list,
+          ),
         ),
       )
     ],

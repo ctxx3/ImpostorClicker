@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:testapk/ImpostorClass.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:impostor_clicker/classes/save.dart';
+import 'impostor_class.dart';
+import 'player_class.dart';
 
 class Game {
   final List<String> tiers = [
@@ -12,11 +15,19 @@ class Game {
     'Astral'
   ];
   late Player player;
-  late final List<Impostor> impostors;
+  late List<Impostor> impostors;
+  late Box save;
 
   Game();
 
   Future<bool> init() async {
+
+    //Load Save
+    await Hive.initFlutter();
+    save = await Hive.openBox('save');
+    Hive.registerAdapter(SaveAdapter());
+
+    //Load Impostor list
     List<Impostor> temp = [];
     dynamic impostorJson = await readEncryptedJson('assets/impostors.data');
     for (var i = 0; i < impostorJson.length; i++) {
@@ -24,6 +35,7 @@ class Game {
     }
     impostors = temp;
 
+    //This won't do
     player = Player.fromJSON(impostors, await readJson('assets/player.json'));
 
     return true;
@@ -50,45 +62,4 @@ class Game {
     }
     return const Utf8Decoder().convert(result);
   }
-}
-
-class Player {
-  String username;
-  num coins;
-  int playerLevel;
-  num playerxp;
-  int selectedImpostor;
-  List<Character> impostors;
-
-  Player(
-      {this.username = 'player',
-      this.coins = .0,
-      this.playerLevel = 1,
-      this.playerxp = .0,
-      this.selectedImpostor = 0,
-      this.impostors = const []});
-
-  factory Player.fromJSON(List<Impostor> impostors, dynamic json) {
-    List<Character> temp = [];
-    for (var i in json['impostors']) {
-      temp.add(Character(impostors[i['baseId']], i['name'],
-          level: i['level'], exp: i['exp'], stars: i['stars']));
-    }
-    return Player(
-        username: json['username'],
-        coins: json['coins'],
-        playerLevel: json['playerLevel'],
-        playerxp: json['playerxp'],
-        selectedImpostor: json['selectedImpostor'],
-        impostors: temp);
-  }
-
-  dynamic toJSON() => {
-        'username': username,
-        'coins': coins,
-        'playerLevel': playerLevel,
-        'playerxp': playerxp,
-        'selectedImpostor': selectedImpostor,
-        'impostors': List.from(impostors.map((element) => element.toJSON()))
-      };
 }

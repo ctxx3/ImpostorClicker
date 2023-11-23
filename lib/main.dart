@@ -2,13 +2,26 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:testapk/impostor_view.dart';
-import 'package:testapk/game.dart';
-import 'package:testapk/main_game.dart';
+import 'package:impostor_clicker/views/impostor_view.dart';
+import 'package:impostor_clicker/classes/game_class.dart';
+import 'package:impostor_clicker/views/main_view.dart';
 
-void main() {
+import 'views/lootbox_view.dart';
+import 'views/shop_view.dart';
+import 'views/user_view.dart';
+
+late Game game;
+Future<void> main() async {
+  // runApp(  DevicePreview(
+  //   enabled: !kReleaseMode,
+  //   builder: (context) => MyApp(), // Wrap your app
+  // ),);
+  game = Game();
+  await game.init();
   runApp(const MyApp());
 }
+
+class SaveAdapter {}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,15 +32,17 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Color(0x00000000)));
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(backgroundColor: Colors.black),
+      title: 'Impostor Clicker',
+      theme: ThemeData(colorScheme: const ColorScheme.dark()),
       home: const MainPage(),
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   MainPageState createState() => MainPageState();
@@ -36,7 +51,6 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _tabController;
   late final AnimationController _controller;
-  late Game game;
   int currentSelected = 0;
 
   @override
@@ -48,7 +62,6 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
       value: 0,
     );
     _tabController = TabController(vsync: this, length: 4);
-    game = Game();
   }
 
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
@@ -80,36 +93,27 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   bool panelOpen = false;
   bool loaded = false;
-  FutureBuilder body() {
-    return FutureBuilder(
-        future: game.init(),
-        builder: (context, snapshot) {
-          if (loaded || snapshot.hasData) {
-            loaded = true;
-            return Stack(
-              children: [
-                TabBarView(
-                    controller: _tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const ClipRect(child: MainGame()),
-                      template("LMAO 2", Colors.indigo),
-                      template("LMAO 3", Colors.green),
-                      template("LMAO 4", Colors.purple),
-                    ]),
-                SlideTransition(
-                  position: _offsetAnimation,
-                  child: ClipRect(
-                      child: ImpostorView(
-                    game: game,
-                  )),
-                ),
-              ],
-            );
-          } else {
-            return const Text("Loading");
-          }
-        });
+  Stack body() {
+    return Stack(
+      children: [
+        TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              ClipRect(child: MainGame()),
+              ClipRect(child: ShopView()),
+              ClipRect(child: LootboxView(game: game)),
+              ClipRect(child: UserView()),
+            ]),
+        SlideTransition(
+          position: _offsetAnimation,
+          child: ClipRect(
+              child: ImpostorView(
+            game: game,
+          )),
+        ),
+      ],
+    );
   }
 
   int _bottomNavIndex = 0;
@@ -131,6 +135,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
           });
         },
         elevation: 4.0,
+        shape: const CircleBorder(),
         child: (panelOpen)
             ? const Icon(FontAwesomeIcons.chevronDown)
             : const Icon(FontAwesomeIcons.chevronUp),
@@ -142,20 +147,23 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
             FontAwesomeIcons.ghost,
             FontAwesomeIcons.solidCircleUser
           ],
+          //height: 15,
+          safeAreaValues:
+              const SafeAreaValues(left: false, right: false, bottom: false),
           activeIndex: _bottomNavIndex,
           gapLocation: GapLocation.center,
           notchSmoothness: NotchSmoothness.smoothEdge,
           leftCornerRadius: 32,
           rightCornerRadius: 32,
-          backgroundColor: const Color(0xa0000000),
+          backgroundColor: const Color.fromARGB(159, 0, 0, 0),
           splashSpeedInMilliseconds: 200,
           inactiveColor: const Color(0xff808080),
           activeColor: const Color(0xffffffff),
           onTap: (index) => {
                 _tabController.animateTo(index),
-                setState(() => {
-                      _bottomNavIndex = index,
-                    }),
+                setState(
+                  () => _bottomNavIndex = index,
+                ),
               }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
